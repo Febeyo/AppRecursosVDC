@@ -23,74 +23,47 @@ import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class Base4 extends JPanel implements ActionListener, ItemListener {
-	private JComboBox<String> especialidad, lista; 
-	private JLabel uno;
+	private JComboBox<String> categorias, lista; 
 	private JTextField dos; 
 	private JButton ir, e1,b3;
 	private String a, b, c, bcod; 
 	private String busqueda= null;
-	private int pulsa=0, valoir;
-
-	public static float dinerocirugia;
-	private ArrayList<JLabel> numero, contenido; 
+	private int pulsa=0, valoir categ;
+	private JScrollPane barra; 
 	private ArrayList<JPanel> lisres;
 	public Base4() {
 		lisres=new ArrayList<>();
-		numero = new ArrayList<>();
-		contenido= new ArrayList<>();
-		setLayout(new GridLayout(0,1,0,0));
-		JPanel pa1= new JPanel();
-		add(pa1);
-		pa1.setLayout(new FlowLayout(FlowLayout.LEFT,10,20));
-		
-		especialidad = new JComboBox<String>(); 
-		pa1.add(especialidad);
-		especialidad.addItem("Seleccionar categor\u00eda");
-		especialidad.addItem("Cualquier categor\u00eda");
-		especialidad.addItem("Primera categor\u00eda");
-		especialidad.addItem("Segunda categor\u00eda");
-		especialidad.addItem("Tercera categor\u00eda");
-		especialidad.addItem("Cuarta categor\u00eda");
-		especialidad.addItem("Quinta categor\u00eda");
-		especialidad.addItem("Sexta categor\u00eda");
-		especialidad.addItem("S\u00e9ptima categor\u00eda");
-		especialidad.addItem("Octava categor\u00eda");
-		especialidad.addItem("Novena categor\u00eda");
-		especialidad.addItem("D\u00e9cima categor\u00eda");
-		especialidad.addItem("Und\u00e9cima categor\u00eda");
-		especialidad.addItem("Duod\u00e9cima categor\u00eda");
-		especialidad.addItem("Decimotercera categor\u00eda");
-		especialidad.addItem("Decimocuarta categor\u00eda");
-		especialidad.addItemListener(this);
-		
-		uno = new JLabel("B\u00fasqueda por palabras:");
-		pa1.add(uno);
-		dos= new JTextField(30); 
-		pa1.add(dos);
-		ir = new JButton("Buscar");
-		pa1.add(ir);
-		ir.addActionListener(this);	
-		
-		JPanel pa2= new JPanel();
-		add(pa2);
-		pa2.setLayout(new FlowLayout(FlowLayout.LEFT,40,20));
 
+		setLayout(new GridLayout(0,1,0,0));
+		JPanel todo =Utilidades.panelVertical(); 
+		add(todo); 
+		barra= new JScrollPane();
+		add(barra);
+		barra.setViewportView(todo);
+		JPanel pa1= Utilidades.pLeft(todo, 20, 10);
+
+		String [] liscategorias={"Seleccionar categor\u00eda","Primera categor\u00eda","Segunda categor\u00eda","Tercera categor\u00eda","Cuarta categor\u00eda","Quinta categor\u00eda","Sexta categor\u00eda","S\u00e9ptima categor\u00eda","Octava categor\u00eda","Novena categor\u00eda","D\u00e9cima categor\u00eda","Und\u00e9cima categor\u00eda","Duod\u00e9cima categor\u00eda","Decimotercera categor\u00eda","Decimocuarta categor\u00eda","Cualquier categor\u00eda"};
+		categorias = new JComboBox<String>(liscategorias); 
+		pa1.add(categorias);		
+		categorias.addItemListener(this);
+		
+		Utilidades.nuevosLabel("B\u00fasqueda por palabras:", pa1);
+		dos=Utilidades.nuevosTF(30, pa1);		
+		ir =Utilidades.nuevoBoton("Buscar", pa1, this);
+		
+		JPanel pa2=  Utilidades.pLeft(todo, 40, 20);
 		lista = new JComboBox<String>(); 		
 		pa2.add(lista);
-		e1 = new JButton ("A\u00f1adir");		
-		pa2.add(e1);
-		e1.addActionListener(this);
-		
-		b3= new JButton("Borrar listado");
-		pa2.add(b3);
-		b3.addActionListener(this);
+		e1 = Utilidades.nuevoBoton("A\u00f1adir", pa2, this);				
+		b3= Utilidades.nuevoBoton("Borrar listado", pa2, this);
+
 		
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()== especialidad){
-			a = (String)especialidad.getSelectedItem();
+			categ=especialidad.getSelectedIndex();
 		}
 		int num=lista.getItemCount();
 		if(num!=0){
@@ -104,61 +77,18 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-			if(a =="Cualquier categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ?";
-			}
-			if(a =="Primera categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 1";
-			}
-			if(a =="Segunda categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 2";
-			}
-			if(a =="Tercera categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 3";
-			}
-			if(a =="Cuarta categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 4";
-			}
-			if(a =="Quinta categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 5";
-			}
-			if(a =="Sexta categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 6";
-			}
-			if(a =="S\u00e9ptima categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 7";
-			}
-			if(a =="Octava categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 8";
-			}
-			if(a =="Novena categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 9";
-			}
-			if(a =="D\u00e9cima categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 10";
-			}
-			if(a =="Und\u00e9cima categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 11";
-			}
-			if(a =="Duod\u00e9cima categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 12";
-			}
-			if(a =="Decimotercera categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 13";
-			}
-			if(a =="Decimocuarta categor\u00eda"){
-				busqueda = "SELECT * FROM SOVI WHERE Lesion LIKE ? AND Categoria= 14";
-			}
-						
+		if(categ==15) {
+			busqueda=Utilidades.busquedaSimilar("SOVI","Lesion");
+		}else {
+			busqueda=Utilidades.busquedaMezcla("SOVI", "Lesion", "Categoria", String.valueOf(categ));
+		}
+			
 			if(e.getSource()==ir){
 				lista.removeAllItems(); 
 				b = dos.getText();
-				b = b.toUpperCase();
-				bcod = b;
 				try (Connection union = this.conectar();
 						PreparedStatement ps  = union.prepareStatement(busqueda)){
-							ps.setString(1, "%"+bcod+"%");
+							ps.setString(1, "%"+b+"%");
 							ResultSet respuesta = ps.executeQuery();
 							while (respuesta.next()) {
 								String valor = respuesta.getString("Lesion");
@@ -178,8 +108,6 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 				especialidad.setSelectedIndex(0);
 				lista.removeAllItems();		
 				lisres.clear();
-				numero.clear(); 
-				contenido.clear();
 				revalidate();
 				pulsa=0;
 			}	
@@ -194,18 +122,9 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 								String dinero= respuesta.getString("Indemnizacion");
 								String total= valor+"       Categor\u00eda "+categ+"   "+dinero+" Euros";
 								
-								lisres.add(new JPanel());
-								
-								numero.add(new JLabel(String.valueOf(pulsa+1)+") "));
-								lisres.get(pulsa).add(numero.get(pulsa));
-								
-								contenido.add(new JLabel(total));
-								lisres.get(pulsa).add(contenido.get(pulsa));
-								
+								lisres.add(Utilidades.mostrarListado(pulsa,total));
 								add(lisres.get(pulsa));
-								lisres.get(pulsa).setLayout(new FlowLayout(FlowLayout.LEFT, 5,0));
-								pulsa++;
-								
+								pulsa++;								
 								revalidate();
 						
 				}catch (SQLException f) {

@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,50 +28,47 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 	private JButton ir, e1,b3;
 	private String a, b, c, bcod; 
 	private String busqueda= null;
-	private int pulsa=0, valoir;
-	private ArrayList<JLabel> numero, contenido; 
+	private int pulsa=0, valoir, esp;
+	private JScrollPane barra;
 	private ArrayList<JPanel> lisres;
 	public Base2() {
 		lisres=new ArrayList<>();
-		numero = new ArrayList<>();
-		contenido= new ArrayList<>();
 		setLayout(new GridLayout(0,1,0,0));
 		
-		JPanel pa1= new JPanel();
-		add(pa1);
-		pa1.setLayout(new FlowLayout(FlowLayout.LEFT,10,20));		
+		JPanel todo =Utilidades.panelVertical(); 
+		add(todo); 
+		barra= new JScrollPane();
+		add(barra);
+		barra.setViewportView(todo);
 		
-		String [] lisespecialidades={"Seleccionar especialidad quir\u00fargica","Cirug\u00eda Vascular","Cirug\u00eda Cardiovascular","Cirug\u00eda Pedi\u00e1trica","Cirug\u00eda General y del Aparato Digestivo","Cirug\u00eda Maxilofacial","Cirug\u00eda Pl\u00e1stica","Cirug\u00eda Tor\u00e1cica","Dermatolog\u00eda","Ginecolog\u00eda y Obstetricia","Neurocirug\u00eda","Oftalmolog\u00eda","ORL","Traumatolog\u00eda","Urolog\u00eda"};
+		JPanel pa1= Utilidades.pLeft(todo, 10, 20);
+				
+		
+		String [] lisespecialidades={"Seleccionar especialidad quir\u00fargica","Cirug\u00eda Vascular","Cirug\u00eda Cardiovascular","Cirug\u00eda Pedi\u00e1trica","Cirug\u00eda General y Aparato Digestivo","Cirug\u00eda Maxilofacial","Cirug\u00eda Pl\u00e1stica","Cirug\u00eda Tor\u00e1cica","Dermatolog\u00eda","Ginecolog\u00eda y Obstetricia","Neurocirug\u00eda","Oftalmolog\u00eda","ORL","Traumatolog\u00eda","Urolog\u00eda"};
 		especialidad = new JComboBox<String>(lisespecialidades); 
 		pa1.add(especialidad);
 		especialidad.addItemListener(this);
 		
-		uno = new JLabel("B\u00fasqueda por palabras:");
-		pa1.add(uno);
-		dos= new JTextField(30); 
-		pa1.add(dos);
-		ir = new JButton("Buscar");
-		pa1.add(ir);
-		ir.addActionListener(this);	
+		Utilidades.nuevosLabel("B\u00fasqueda por palabras:", pa1);
 		
-		JPanel pa2= new JPanel();
-		add(pa2);
-		pa2.setLayout(new FlowLayout(FlowLayout.LEFT,40,20));
+		dos= Utilidades.nuevosTF(30,pa1);
+		ir = Utilidades.nuevoBoton("Buscar",pa1, this);
+		
+		
+		JPanel pa2=Utilidades.pLeft(todo, 40, 20);
+		
 
 		lista = new JComboBox<String>(); 		
 		pa2.add(lista);
 		
-		JPanel pa3= new JPanel();
-		add(pa3);
-		pa3.setLayout(new FlowLayout(FlowLayout.LEFT,40,20));
+		JPanel pa3= Utilidades.pLeft(todo, 40, 20);
 		
-		e1 = new JButton ("Grupo quir\u00fargico");		
-		pa3.add(e1);
-		e1.addActionListener(this);
 		
-		b3= new JButton("Borrar listado");
-		pa3.add(b3);
-		b3.addActionListener(this);
+		e1 = Utilidades.nuevoBoton("Grupo quir\u00fargico", pa3, this);		
+		
+		
+		b3= Utilidades.nuevoBoton("Borrar listado", pa3, this);
+		
 		
 	}
 	@Override
@@ -79,6 +76,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 		// TODO Auto-generated method stub
 		if(e.getSource()== especialidad){
 			a = (String)especialidad.getSelectedItem();
+			esp=especialidad.getSelectedIndex();
 		}
 		if(e.getSource()==lista){
 			int num=lista.getItemCount();
@@ -92,58 +90,19 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-			if(a =="Cirug\u00eda Vascular"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Vascular' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda Cardiovascular"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Cardiovascular' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda General y del Aparato Digestivo"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda General y Aparato Digestivo' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda Maxilofacial"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Maxilofacial' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda Pedi\u00e1trica"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Pedi\u00e1trica' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda Pl\u00e1stica"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Pl\u00e1stica' WHERE Nombre LIKE ?";
-			}
-			if(a =="Cirug\u00eda Tor\u00e1cica"){
-				busqueda = "SELECT * FROM 'Cirug\u00eda Tor\u00e1cica' WHERE Nombre LIKE ?";
-			}
-			if(a =="Dermatolog\u00eda"){
-				busqueda = "SELECT * FROM 'Dermatolog\u00eda' WHERE Nombre LIKE ?";
-			}
-			if(a =="Ginecolog\u00eda y Obstetricia"){
+		if(a =="Ginecolog\u00eda y Obstetricia"){
 				busqueda = "SELECT * FROM 'Ginecolog\u00eda' WHERE Nombre LIKE ?";
-			}
-			if(a =="Neurocirug\u00eda"){
-				busqueda = "SELECT * FROM 'Neurocirug\u00eda' WHERE Nombre LIKE ?";
-			}
-			if(a =="Oftalmolog\u00eda"){
-				busqueda = "SELECT * FROM 'Oftalmolog\u00eda' WHERE Nombre LIKE ?";
-			}
-			if(a =="ORL"){
-				busqueda = "SELECT * FROM 'ORL' WHERE Nombre LIKE ?";
-			}
-			if(a =="Traumatolog\u00eda"){
-				busqueda = "SELECT * FROM 'Traumatolog\u00eda' WHERE Nombre LIKE ?";
-			}
-			if(a =="Urolog\u00eda"){
-				busqueda = "SELECT * FROM 'Urolog\u00eda' WHERE Nombre LIKE ?";
-			}
+		}else{
+			busqueda=Utilidades.busquedaSimilar("'"+a+"'", "Nombre");}
+			
 			
 			if(e.getSource()==ir){
 				lista.removeAllItems(); 
 				b = dos.getText();
-				b = b.toUpperCase();
-				bcod = b;
+				
 				try (Connection union = this.conectar();
 						PreparedStatement ps  = union.prepareStatement(busqueda)){
-							ps.setString(1, "%"+bcod+"%");
+							ps.setString(1, "%"+b+"%");
 							ResultSet respuesta = ps.executeQuery();
 							while (respuesta.next()) {
 								String valor = respuesta.getString("Nombre");
@@ -163,8 +122,6 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 				especialidad.setSelectedIndex(0);
 				lista.removeAllItems();
 				lisres.clear();
-				numero.clear();
-				contenido.clear();
 				pulsa=0;
 				dos.setText("");
 				revalidate();
@@ -180,18 +137,9 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 								String valor= respuesta.getString("Nombre");
 								String total= "Grupo "+grupo+"   "+valor;
 								
-								lisres.add(new JPanel());
-								
-								numero.add(new JLabel(String.valueOf(pulsa+1)+") "));
-								lisres.get(pulsa).add(numero.get(pulsa));
-								
-								contenido.add(new JLabel(total));
-								lisres.get(pulsa).add(contenido.get(pulsa));
-								
+								lisres.add(Utilidades.mostrarListado(pulsa, total));
 								add(lisres.get(pulsa));
-								lisres.get(pulsa).setLayout(new FlowLayout(FlowLayout.LEFT, 5,0));
 								pulsa++;
-								
 								revalidate();
 						
 				}catch (SQLException f) {
