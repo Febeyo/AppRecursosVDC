@@ -9,6 +9,8 @@ import javax.swing.JTabbedPane;
 public class InicioApp extends AppVentana{
 
 	public Base2 bdatos2;
+	public Base4 bdatos4;
+	public Base6 bdatos6;
 
 	
 
@@ -23,10 +25,12 @@ public class InicioApp extends AppVentana{
 		bdatos2 =new Base2();
 		partes.addTab("Grupos Quirurgicos OMC", bdatos2);
 		/*bdatos3 =new Base3();
-		partes.addTab("Listado de protesis, ortesis y ayudas técnicas", bdatos3);
+		partes.addTab("Listado de protesis, ortesis y ayudas técnicas", bdatos3);*/
 		bdatos4 =new Base4();
 		partes.addTab("Baremo Seguro Obligatorio de Viajeros", bdatos4);
-		bdatos5 = new Base5();
+		bdatos6=new Base6();
+		partes.addTab("Pr\u00f3tesis", bdatos6);
+		/*bdatos5 = new Base5();
 		partes.addTab("Asistencia Sanitaria", bdatos5);*/
 		getContentPane().add(partes);
 	}

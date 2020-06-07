@@ -18,98 +18,82 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
-public class Base2 extends JPanel implements ActionListener, ItemListener {
-	private JComboBox<String> especialidad, lista; 
-	private JLabel uno;
+public class Base4 extends JPanel implements ActionListener, ItemListener {
+	private JComboBox<String> categorias, lista; 
 	private JTextField dos; 
 	private JButton ir, e1,b3;
 	private String a, b, c, bcod; 
 	private String busqueda= null;
-	private int pulsa=0, valoir, esp;
-	private JScrollPane barra;
+	private int pulsa=0, valoir, categ;
+	private JScrollPane barra; 
 	private ArrayList<JPanel> lisres;
-	private JPanel pa4;
-	public Base2() {
+	private JPanel pa3; 
+	public Base4() {
 		lisres=new ArrayList<>();
+
 		setLayout(new GridLayout(0,1,0,0));
-		
 		JPanel todo =Utilidades.panelVertical(); 
 		add(todo); 
 		barra= new JScrollPane();
 		add(barra);
 		barra.setViewportView(todo);
-		
-		JPanel pa1= Utilidades.pLeft(todo, 10, 20);
-				
-		
-		String [] lisespecialidades={"Seleccionar especialidad quir\u00fargica","Cirug\u00eda Vascular","Cirug\u00eda Cardiovascular","Cirug\u00eda Pedi\u00e1trica","Cirug\u00eda General y Aparato Digestivo","Cirug\u00eda Maxilofacial","Cirug\u00eda Pl\u00e1stica","Cirug\u00eda Tor\u00e1cica","Dermatolog\u00eda","Ginecolog\u00eda y Obstetricia","Neurocirug\u00eda","Oftalmolog\u00eda","ORL","Traumatolog\u00eda","Urolog\u00eda"};
-		especialidad = new JComboBox<String>(lisespecialidades); 
-		pa1.add(especialidad);
-		especialidad.addItemListener(this);
+		JPanel pa1= Utilidades.pLeft(todo, 20, 10);
+
+		String [] liscategorias={"Seleccionar categor\u00eda","Primera categor\u00eda","Segunda categor\u00eda","Tercera categor\u00eda","Cuarta categor\u00eda","Quinta categor\u00eda","Sexta categor\u00eda","S\u00e9ptima categor\u00eda","Octava categor\u00eda","Novena categor\u00eda","D\u00e9cima categor\u00eda","Und\u00e9cima categor\u00eda","Duod\u00e9cima categor\u00eda","Decimotercera categor\u00eda","Decimocuarta categor\u00eda","Cualquier categor\u00eda"};
+		categorias = new JComboBox<String>(liscategorias); 
+		pa1.add(categorias);		
+		categorias.addItemListener(this);
 		
 		Utilidades.nuevosLabel("B\u00fasqueda por palabras:", pa1);
+		dos=Utilidades.nuevosTF(30, pa1);		
+		ir =Utilidades.nuevoBoton("Buscar", pa1, this);
 		
-		dos= Utilidades.nuevosTF(30,pa1);
-		ir = Utilidades.nuevoBoton("Buscar",pa1, this);
-		
-		
-		JPanel pa2=Utilidades.pLeft(todo, 40, 20);
-		
-
+		JPanel pa2=  Utilidades.pLeft(todo, 40, 20);
 		lista = new JComboBox<String>(); 		
 		pa2.add(lista);
-		
-		JPanel pa3= Utilidades.pLeft(todo, 40, 20);
-		
-		
-		e1 = Utilidades.nuevoBoton("Grupo quir\u00fargico", pa3, this);		
-		
-		
-		b3= Utilidades.nuevoBoton("Limpiar", pa3, this);
-		
-		pa4=Utilidades.panelVertical();
-		todo.add(pa4);
-		
-		
+		e1 = Utilidades.nuevoBoton("A\u00f1adir", pa2, this);				
+		b3= Utilidades.nuevoBoton("Limpiar", pa2, this);
+
+		pa3=Utilidades.panelVertical();
+		todo.add(pa3);
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()== especialidad){
-			a = (String)especialidad.getSelectedItem();
-			esp=especialidad.getSelectedIndex();
+		if(e.getSource()== categorias){
+			categ=categorias.getSelectedIndex();
 		}
+		int num=lista.getItemCount();
+		if(num!=0){
 		if(e.getSource()==lista){
-			int num=lista.getItemCount();
-			if(num!=0){
 			String prueb1=(String)lista.getSelectedItem();
-			c = prueb1;}
-		}			
+			c = prueb1;
+		}	}		
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(a =="Ginecolog\u00eda y Obstetricia"){
-				busqueda = "SELECT * FROM 'Ginecolog\u00eda' WHERE Nombre LIKE ?";
-		}else{
-			busqueda=Utilidades.busquedaSimilar("'"+a+"'", "Nombre");}
-			
+		if(categ==15) {
+			busqueda=Utilidades.busquedaSimilar("SOVI","Lesion");
+		}else {
+			busqueda=Utilidades.busquedaMezcla("SOVI", "Lesion", "Categoria", String.valueOf(categ));
+		}
 			
 			if(e.getSource()==ir){
 				lista.removeAllItems(); 
 				b = dos.getText();
-				
 				try (Connection union = this.conectar();
 						PreparedStatement ps  = union.prepareStatement(busqueda)){
 							ps.setString(1, "%"+b+"%");
 							ResultSet respuesta = ps.executeQuery();
 							while (respuesta.next()) {
-								String valor = respuesta.getString("Nombre");
+								String valor = respuesta.getString("Lesion");
 								lista.addItem(valor);	            }
 							lista.addItemListener(this);
 				
@@ -123,14 +107,12 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 				for(int i=0; i<valoir; i++){
 					remove(lisres.get(i));
 				}
-				especialidad.setSelectedIndex(0);
-				lista.removeAllItems();
+				categorias.setSelectedIndex(0);
+				lista.removeAllItems();		
 				lisres.clear();
-				pulsa=0;
-				dos.setText("");
-				pa4.removeAll(); 
+				pa3.removeAll();
 				revalidate();
-				
+				pulsa=0;
 			}	
 			if(e.getSource()==e1){
 				
@@ -138,13 +120,14 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 						PreparedStatement ps  = union.prepareStatement(busqueda)){
 							ps.setString(1, "%"+c+"%");
 							ResultSet respuesta = ps.executeQuery();
-								String grupo = respuesta.getString("Grupo");
-								String valor= respuesta.getString("Nombre");
-								String total= "Grupo "+grupo+"   "+valor;
+								String categ = respuesta.getString("Categoria");
+								String valor= respuesta.getString("Lesion");
+								String dinero= respuesta.getString("Indemnizacion");
+								String total= valor+"       Categor\u00eda "+categ+"   "+dinero+" Euros";
 								
-								lisres.add(Utilidades.mostrarListado(pulsa, total));
-								pa4.add(lisres.get(pulsa));
-								pulsa++;
+								lisres.add(Utilidades.mostrarListado(pulsa,total));
+								pa3.add(lisres.get(pulsa));
+								pulsa++;								
 								revalidate();
 						
 				}catch (SQLException f) {
@@ -154,7 +137,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 		
 	}
 	private Connection conectar() {
-        String dir = "jdbc:sqlite:BasesDatos/GQuirurgicos.db";
+        String dir = "jdbc:sqlite:BasesDatos/SOVI.db";
         Connection union = null;
         try {
             union = DriverManager.getConnection(dir);
@@ -164,4 +147,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
         return union;
     }
 	
+
+
 }
+
