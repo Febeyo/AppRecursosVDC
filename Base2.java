@@ -31,6 +31,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 	private int pulsa=0, valoir, esp;
 	private JScrollPane barra;
 	private ArrayList<JPanel> lisres;
+	private JPanel pa4;
 	public Base2() {
 		lisres=new ArrayList<>();
 		setLayout(new GridLayout(0,1,0,0));
@@ -67,7 +68,10 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 		e1 = Utilidades.nuevoBoton("Grupo quir\u00fargico", pa3, this);		
 		
 		
-		b3= Utilidades.nuevoBoton("Borrar listado", pa3, this);
+		b3= Utilidades.nuevoBoton("Limpiar", pa3, this);
+		
+		pa4=Utilidades.panelVertical();
+		todo.add(pa4);
 		
 		
 	}
@@ -124,6 +128,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 				lisres.clear();
 				pulsa=0;
 				dos.setText("");
+				pa4.removeAll(); 
 				revalidate();
 				
 			}	
@@ -138,7 +143,7 @@ public class Base2 extends JPanel implements ActionListener, ItemListener {
 								String total= "Grupo "+grupo+"   "+valor;
 								
 								lisres.add(Utilidades.mostrarListado(pulsa, total));
-								add(lisres.get(pulsa));
+								pa4.add(lisres.get(pulsa));
 								pulsa++;
 								revalidate();
 						

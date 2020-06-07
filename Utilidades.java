@@ -2,12 +2,16 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -106,6 +110,65 @@ public class Utilidades {
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		return p;
 	}
-	
 
+	 public static JComboBox<String> listado(String [] datos, JPanel p, ItemListener l){
+		 JComboBox<String> lis = new JComboBox<String>(datos);
+		 p.add(lis);
+		 lis.addItemListener(l);
+		 return lis;
+	 }
+	 
+	  public static JComboBox<String> listadoA(ArrayList<String> datos, JPanel p, ItemListener l){
+		  String [] valores= new String [datos.size()];
+			valores=datos.toArray(valores);
+		 JComboBox<String> lis = new JComboBox<String>(valores);
+		 p.add(lis);
+		 lis.addItemListener(l);
+		 return lis;
+	 }
+	 
+
+	 
+	 @SafeVarargs
+	public static void limpiar (JComboBox<String>...ls) {
+		 for(JComboBox<String> l:ls) {
+				l.removeAllItems();
+		 }
+	 }
+	 @SafeVarargs
+	 public static void vaciar(ArrayList<String> ...aa){
+		 for(ArrayList<String> al:aa){
+			 al.clear();
+		 }
+	 }
+	 
+	 
+	 @SafeVarargs
+	public static void nuevoElemento (String n, JComboBox<String>...ls) {
+		 for(JComboBox<String> l:ls) {
+				l.addItem(n);
+		 }
+	 }
+	 
+	 @SafeVarargs
+		public static void anular (String n, JComboBox<String>...ls) {
+			 for(JComboBox<String> l:ls) {
+					l.setEnabled(false);
+			 }
+		 }
+	 
+	 public static void nuevoElemento2 (JComboBox<String> l, String[] elem) {
+		 for(int i =0; i<elem.length; i++) {
+				l.addItem(elem[i]);
+		 }
+	 }
+
+	public static JComboBox<String> nuevoListado( JPanel p, ItemListener l){
+			 JComboBox<String> j= new JComboBox<String>(); 
+			 j.addItem("Selecciona"); 
+			 p.add(j); 
+			 j.addItemListener(l);
+			 return j;
+		 
+	 }
 }

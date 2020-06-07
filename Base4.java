@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,9 +28,10 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 	private JButton ir, e1,b3;
 	private String a, b, c, bcod; 
 	private String busqueda= null;
-	private int pulsa=0, valoir categ;
+	private int pulsa=0, valoir, categ;
 	private JScrollPane barra; 
 	private ArrayList<JPanel> lisres;
+	private JPanel pa3; 
 	public Base4() {
 		lisres=new ArrayList<>();
 
@@ -55,15 +56,16 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 		lista = new JComboBox<String>(); 		
 		pa2.add(lista);
 		e1 = Utilidades.nuevoBoton("A\u00f1adir", pa2, this);				
-		b3= Utilidades.nuevoBoton("Borrar listado", pa2, this);
+		b3= Utilidades.nuevoBoton("Limpiar", pa2, this);
 
-		
+		pa3=Utilidades.panelVertical();
+		todo.add(pa3);
 	}
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()== especialidad){
-			categ=especialidad.getSelectedIndex();
+		if(e.getSource()== categorias){
+			categ=categorias.getSelectedIndex();
 		}
 		int num=lista.getItemCount();
 		if(num!=0){
@@ -105,9 +107,10 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 				for(int i=0; i<valoir; i++){
 					remove(lisres.get(i));
 				}
-				especialidad.setSelectedIndex(0);
+				categorias.setSelectedIndex(0);
 				lista.removeAllItems();		
 				lisres.clear();
+				pa3.removeAll();
 				revalidate();
 				pulsa=0;
 			}	
@@ -123,7 +126,7 @@ public class Base4 extends JPanel implements ActionListener, ItemListener {
 								String total= valor+"       Categor\u00eda "+categ+"   "+dinero+" Euros";
 								
 								lisres.add(Utilidades.mostrarListado(pulsa,total));
-								add(lisres.get(pulsa));
+								pa3.add(lisres.get(pulsa));
 								pulsa++;								
 								revalidate();
 						
