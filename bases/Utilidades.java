@@ -24,9 +24,6 @@ import javax.swing.event.ChangeListener;
 
 public class Utilidades {
 
-	public Utilidades() {
-		// TODO Auto-generated constructor stub
-	}
 	public static JPanel mostrarListado(int v, String s){
 		JPanel p = new JPanel();
 		p.add(new JLabel(String.valueOf(v+1)+") "));
@@ -120,21 +117,13 @@ public class Utilidades {
 		 return lis;
 	 }
 	 
-	  public static JComboBox<String> listadoA(ArrayList<String> datos, JPanel p, ItemListener l){
-		  String [] valores= new String [datos.size()];
-			valores=datos.toArray(valores);
-		 JComboBox<String> lis = new JComboBox<String>(valores);
-		 p.add(lis);
-		 lis.addItemListener(l);
-		 return lis;
-	 }
-	 
-
 	 
 	 @SafeVarargs
 	public static void limpiar (JComboBox<String>...ls) {
 		 for(JComboBox<String> l:ls) {
+			 if(l!=null){
 				l.removeAllItems();
+			 }
 		 }
 	 }
 	 @SafeVarargs

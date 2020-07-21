@@ -22,14 +22,13 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 	private JComboBox<String> grupo, funcion, subgrupo, cu,  d1, d2, d3, d4, d5, d6, d7, d8, d9; 
 	private ArrayList<String> c1, e1, c2, c3, c4, c5, c6, c7, c8, c9;
 	private JButton buscar, aceptar, nuevo; 
-	private JScrollPane barra;
 	private int n1,pulsa, tu, t1, t2, t3, t4, t5, t6, t7, t8, t9; 
 	private String gr,tipo1, sb; 
 	private JPanel pa2, pc1, pc2, pc3, pc4;
 	private double precio=0.0; 
 	public Base6() {
 		// TODO Auto-generated constructor stub
-		setLayout(new GridLayout(0,1,0,0));
+		
 		pulsa=0; 
 		e1= new ArrayList<String>(); 
 		c1= new ArrayList<String>(); 
@@ -42,8 +41,7 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		c8 =new ArrayList<String>(); 
 		c9 =new ArrayList<String>(); 
 		
-		String[] n1= {"Selecciona pr\u00f3tesis", "Pr\u00f3tesis miembro superior", "Pr\u00f3tesis miembro inferior"};
-		grupo=Utilidades.listado(n1, p1, this);
+		grupo=Utilidades.listado(new String[] {"Selecciona pr\u00f3tesis", "Pr\u00f3tesis miembro superior", "Pr\u00f3tesis miembro inferior"}, p1, this);
 		grupo.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				rellenaCombo(grupo.getSelectedIndex()); 
@@ -80,27 +78,28 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		todo.add(p4);	
 
 	}
-
+	
+	public void completar(String a, String b, String[] c, boolean d) {
+		gr=a;
+		sb=b; 
+		if(d) {
+			rellenaComboGeneral(subgrupo, c);
+		}
+		subgrupo.setEnabled(d);
+	}
+	
 	public void rellenaCombo2(int v, int vv){
 		String[]n2= {"Selecciona pr\u00f3tesis", "Pr\u00f3tesis parciales de mano","Pr\u00f3tesis desarticulaci\u00f3n mu\u00f1eca","Pr\u00f3tesis de antebrazo","Pr\u00f3tesis desarticulaci\u00f3n codo", "Pr\u00f3tesis de brazo", "Pr\u00f3tesis desarticulaci\u00f3n hombro", "Pr\u00f3tesis amputaci\u00f3n interescapulotor\u00e1cica"};
 		String[]n3= {"Selecciona pr\u00f3tesis", "Pr\u00f3tesis parciales de pie", "Pr\u00f3tesis desarticulaci\u00f3n tobillo","Pr\u00f3tesis transtibial", "Pr\u00f3tesis desarticulaci\u00f3n rodilla","Pr\u00f3tesis transfemoral","Pr\u00f3tesis desarticulaci\u00f3n cadera","Pr\u00f3tesis hemipelvectom\u00eda"};
 			subgrupo.removeAllItems();
 			if(v==1 && vv==1){
-				sb="0";
-				rellenaComboGeneral(subgrupo, n2);
-				subgrupo.setEnabled(true);
+				completar("0618", "0", n2, true);
 			}else if(v==1 && vv==2){
-				gr="0621";
-				sb="062100"; 
-				subgrupo.setEnabled(false);
+				completar("0621", "062100", n2, false);
 			}else if (v==2 && vv==1){
-				sb="062448"; 
-				gr="0624";
-				subgrupo.setEnabled(false);
+				completar("0624", "062448", n3, false);
 			}else if(v==2 && vv==2){
-				sb="0";
-				rellenaComboGeneral(subgrupo, n3);
-				subgrupo.setEnabled(true);
+				completar("0624", "0", n3, true);
 				
 			}
 	}
@@ -113,16 +112,14 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 	
 	
 	public void rellenaCombo(int v){
-		String[] n4= {"Selecciona pr\u00f3tesis","Funcional","Est\u00e9tica"};
-		String[] n5= {"Selecciona pr\u00f3tesis","Provisional", "Definitiva"};
 			funcion.removeAllItems();
 			if(v==1){
 				gr="0618";
-				rellenaComboGeneral(funcion, n4);
+				rellenaComboGeneral(funcion, new  String[] {"Selecciona pr\u00f3tesis","Funcional","Est\u00e9tica"});
 				
 			}else if(v==2){
 				gr="0624";
-				rellenaComboGeneral(funcion,n5);
+				rellenaComboGeneral(funcion,new  String[] {"Selecciona pr\u00f3tesis","Provisional","Definitiva"});
 			}
 	}
 	
@@ -138,11 +135,12 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 	public void itemStateChanged(ItemEvent arg0) {
 		// TODO Auto-generated method stub
 		if(arg0.getSource()==subgrupo) {
+			if(subgrupo.getItemCount()!=0){
 			n1=subgrupo.getSelectedIndex();
-			tipo1=String.valueOf(n1);
+			tipo1=String.valueOf(n1);}
 		}
 		t1= sel1(d1, t1, arg0);
-		tu= sel1(cu, tu,arg0);
+		tu= sel1(cu, tu, arg0);
 		t2= sel1(d2, t2, arg0);
 		t3= sel1(d3, t3, arg0);
 		t4= sel1(d4, t4, arg0);
@@ -151,7 +149,6 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		t7= sel1(d7, t7, arg0);
 		t8= sel1(d8, t8, arg0);
 		t9= sel1(d9, t9, arg0);
-		
 
 	}
 	public void limpiarPanel() {
@@ -170,7 +167,6 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 			if(pulsa>=1) {
 				limpiarPanel();
 			}
-			
 			if(sb.equals("062100")) {
 				Utilidades.nuevosLabel("Componente \u00fanico", pa2);
 				cu=Utilidades.nuevoListado(pa2, this);
@@ -226,57 +222,19 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		}
 		if(arg0.getSource()==aceptar) {
 			if(sb.equals("062100")|| sb.equals("062448")|| tipo1.equals("1")) {
-				if(cu.getItemCount()>1 && (tu-1)!=-1) {
-					JPanel pa3u=Utilidades.pLeft(p4, 5,5);
-					Utilidades.nuevosLabel(cu.getSelectedItem().toString()+"  "+e1.get(tu-1).toString(), pa3u);
-					revalidate();
-				}
+				colocarComponentes (cu, tu, e1);
+				revalidate();
 			}else {
-			if(d1.getItemCount()>1 && t1-1!=-1) {
-				JPanel pa31=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d1.getSelectedItem().toString()+"  "+c1.get(t1-1).toString(), pa31);
-				precio=precio+precios(c1, t1-1);
-			}
-			
-			if(d2.getItemCount()>1 && t2-1!=-1) {
-				JPanel pa32=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d2.getSelectedItem().toString()+"  "+c2.get(t2-1).toString(), pa32);
-				precio=precio+precios(c2, t2-1);
-			}
-			if(d3.getItemCount()>1 && t3-1!=-1) {
-				JPanel pa33=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d3.getSelectedItem().toString()+"  "+c3.get(t3-1).toString(), pa33);
-				precio=precio+precios(c3, t3-1);
-			}
-			if(d4.getItemCount()>1 && t4-1!=-1) {
-				JPanel pa34=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d4.getSelectedItem().toString()+"  "+c4.get(t4-1).toString(), pa34);
-				precio=precio+precios(c4, t4-1);
-			}if(d5.getItemCount()>1 && t5-1!=-1) {
-				JPanel pa35=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d5.getSelectedItem().toString()+"  "+c5.get(t5-1).toString(), pa35);
-				precio=precio+precios(c5, t5-1);
-			}
-			if(d6.getItemCount()>1 && t6-1!=-1) {
-				JPanel pa36=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d6.getSelectedItem().toString()+"  "+c6.get(t6-1).toString(), pa36);
-				precio=precio+precios(c6, t6-1);
-			}
-			if(d7.getItemCount()>1 && t7-1!=-1) {
-				JPanel pa37=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d7.getSelectedItem().toString()+"  "+c7.get(t7-1).toString(), pa37);
-				precio=precio+precios(c7, t7-1);
-			}
-			if(d8.getItemCount()>1 && t8-1!=-1) {
-				JPanel pa38=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d8.getSelectedItem().toString()+"  "+c8.get(t8-1).toString(), pa38);
-				precio=precio+precios(c8, t8-1);
-			}
-			if(d9.getItemCount()>1 && t9-1!=-1) {
-				JPanel pa39=Utilidades.pLeft(p4, 5,5);
-				Utilidades.nuevosLabel(d9.getSelectedItem().toString()+"  "+c9.get(t9-1).toString(), pa39);
-				precio=precio+precios(c9, t9-1);
-			}
+				colocarComponentes (d1, t1, c1);
+				colocarComponentes (d2, t2, c2);
+				colocarComponentes (d3, t3, c3);
+				colocarComponentes (d4, t4, c4);
+				colocarComponentes (d5, t5, c5);
+				colocarComponentes (d6, t6, c6);
+				colocarComponentes (d7, t7, c7);
+				colocarComponentes (d8, t8, c8);
+				colocarComponentes (d9, t9, c9);
+	
 			
 			Utilidades.nuevosLabel("Precio total(IMF): "+String.format("%.3f", precio)+ " Euros", p4);
 			revalidate();
@@ -285,11 +243,18 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		if(arg0.getSource()==nuevo) {
 			limpiarPanel(); 
 			grupo.setSelectedIndex(0);
-			Utilidades.limpiar(cu, d1,d2, d3, d4, d5, d6, d7, d8, d9);
+			Utilidades.limpiar(d1,d2, d3, d4, d5, d6, d7, d8, d9, cu);
 			Utilidades.vaciar(e1, c1, c2, c3, c4, c5, c6, c7, c8, c9); 
+			precio=0.0;
 		}
 	}
-
+	public void colocarComponentes (JComboBox<String> a, int b, ArrayList<String> c) {
+		if(a.getItemCount()>1 && b-1!=-1) {
+			Utilidades.nuevosLabel(a.getSelectedItem().toString()+"  "+c.get(b-1).toString(), Utilidades.pLeft(p4, 5,5));
+			precio=precio+precios(c, b-1);
+		}
+	}
+	
 	public Double precios(ArrayList<String> a, int tt) {
 		String[] partes= a.get(tt).split(":");
 		String v= partes[3].replace(" Euros", ""). trim(); 
@@ -309,9 +274,8 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		String b ="SELECT * FROM Protesis WHERE Grupo = '0624' AND Tipo = "+"'"+tipo+"'"+"AND Componente = "+"'"+comp+"'";
 		return b;
 	}
-	public void busqComponentes( String grupo, String tipo, String comp, ArrayList<String> al, JComboBox<String> jbc) {
-		String busqueda="SELECT * FROM  Protesis WHERE Grupo = "+"'"+grupo+"'"+"AND Tipo = "+"'"+tipo+"'"+"AND Componente = "+"'"+comp+"'";
-		try (Connection union = this.conectar();
+	 public void buscarValores(String busqueda,  ArrayList<String> al, JComboBox<String> jbc) {
+	 try (Connection union = this.conectar();
 				PreparedStatement ps  = union.prepareStatement(busqueda)){
 					ResultSet respuesta = ps.executeQuery();
 					while (respuesta.next()) {
@@ -327,26 +291,16 @@ public class Base6 extends PanelBase implements ActionListener, ItemListener{
 		}catch (SQLException f) {
 		     System.out.println(f.getMessage());
 		 }
+ }
+	public void busqComponentes( String grupo, String tipo, String comp, ArrayList<String> al, JComboBox<String> jbc) {
+		String busqueda="SELECT * FROM  Protesis WHERE Grupo = "+"'"+grupo+"'"+"AND Tipo = "+"'"+tipo+"'"+"AND Componente = "+"'"+comp+"'";
+		buscarValores(busqueda, al, jbc); 
 	}
 	
 	public void busqCompSimple( String grupo, String comp, ArrayList<String> al, JComboBox<String> jbc) {
 		String busqueda="SELECT * FROM  Protesis WHERE Grupo = "+"'"+grupo+"'"+"AND Componente = "+"'"+comp+"'";
-		try (Connection union = this.conectar();
-				PreparedStatement ps  = union.prepareStatement(busqueda)){
-					ResultSet respuesta = ps.executeQuery();
-					while (respuesta.next()) {
-						String valor = respuesta.getString("Descripcion");
-						String v2=respuesta.getString("Subgrupo");
-						String v3=respuesta.getString("Codigo");
-						String v4=respuesta.getString("Renovacion");
-						String v5=respuesta.getString("IMF");
-						String inf="Codigo: "+v2+v3+" Vida Media: "+v4+" meses  IMF: "+v5+" Euros";
-						al.add(inf);
-						jbc.addItem(valor);
-						}
-		}catch (SQLException f) {
-		     System.out.println(f.getMessage());
-		 }
+		buscarValores(busqueda, al, jbc); 
+
 	}
 
 	public void componentes() {
